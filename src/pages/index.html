@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>gcdemo</title>
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.staticPath %>/css/index.css"/>
+  </head>
+  <body>
+    <div id="app"></div>
+    <%
+     //页面引导页
+     if(htmlWebpackPlugin.options.isIndex){
+       htmlWebpackPlugin.options.pages.forEach((page)=>{
+    %>
+    <br/><a href="<%=page%>"><%=page%></a><br/>
+    <%
+       });
+    }
+    %>
+  <!--<%
+    //测试资源的引用
+    console.log(htmlWebpackPlugin.options.staticPath+'/js/test.js');
+   %>-->
+  </body>
+</html>
