@@ -19,11 +19,15 @@
         hPctAll:0,//h方向的总pct
         dots:null,
         warea:{x: null, y: null, max: 20000},
+        width:0,
+        height:0,
       };
     },
     methods: {
       draw(ctx){
         this.hPctAll=this.getHPct();
+        this.width=this.getCanvasRef().width*Constans.definition;
+        this.height=this.getCanvasRef().height*Constans.definition;
         if(!this.dots){
           this.initDots();
           this.drawNetParticleAni(ctx);
@@ -35,16 +39,16 @@
       initDots(){
         let dots=[];
         for (let i = 0; i < 300; i++) {
-          let x = Math.random() * 750;
-          let y = Math.random() * this.hPctAll;
-          let xa = Math.random() * 2 - 1;
-          let ya = Math.random() * 2 - 1;
+          let x = Math.random() * this.width;
+          let y = Math.random() * this.height;
+          let xa = Math.random() * 8 - 5;
+          let ya = Math.random() * 8 - 5;
           dots.push({
             x: x,
             y: y,
             xa: xa,
             ya: ya,
-            max: 6000
+            max: 12000
           })
         }
         this.dots=dots;
@@ -57,15 +61,18 @@
       },
       drawNetParticle(ctx){
         this.clearAll(ctx);
+
+        console.time("triangulate");
         let ndots = [this.warea].concat(this.dots);
+
         this.dots.forEach((dot,index)=>{
           // 粒子位移
           dot.x += dot.xa;
           dot.y += dot.ya;
 
           // 遇到边界将加速度反向
-          dot.xa *= (dot.x > 750|| dot.x < 0) ? -1 : 1;
-          dot.ya *= (dot.y > this.hPctAll || dot.y < 0) ? -1 : 1;
+          dot.xa *= (dot.x > this.width|| dot.x < 0) ? -1 : 1;
+          dot.ya *= (dot.y > this.height || dot.y < 0) ? -1 : 1;
 
           this.drawDot(dot,ctx);
 
@@ -74,8 +81,8 @@
             let d2 = ndots[i];
             if (dot === d2 || d2.x === null || d2.y === null) continue;
 
-            let xc = this.toPx(dot.x - d2.x);
-            let yc = this.toPx(dot.y - d2.y);
+            let xc = dot.x - d2.x;
+            let yc = dot.y - d2.y;
 
             // 两个粒子之间的距离
             let dis = xc * xc + yc * yc;
@@ -94,26 +101,24 @@
           }
           ndots.splice(index, 1);
         });
+        //console.timeEnd("triangulate");
       },
       drawRelation(dot1,dot2,ratio,ctx){
         ctx.save();
-        ctx.scale(Constans.definition,Constans.definition);
-
         // 画线
         ctx.beginPath();
         ctx.lineWidth = ratio / 2;
         ctx.strokeStyle = 'rgba(0,0,0,' + (ratio + 0.2) + ')';
-        ctx.moveTo(this.toPx(dot1.x), this.toPx(dot1.y));
-        ctx.lineTo(this.toPx(dot2.x), this.toPx(dot2.y));
+        ctx.moveTo(dot1.x, dot1.y);
+        ctx.lineTo(dot2.x, dot2.y);
         ctx.stroke();
 
         ctx.restore();
       },
       drawDot(dot,ctx){
         ctx.save();
-        ctx.scale(Constans.definition,Constans.definition);
         // 绘制点
-        ctx.fillRect(this.toPx(dot.x) - 0.5, this.toPx(dot.y) - 0.5, 1, 1);
+        ctx.fillRect(dot.x - 1, dot.y - 1, 2, 2);
         ctx.restore();
       },
       clearAll(ctx){
