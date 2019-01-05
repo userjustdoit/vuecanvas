@@ -129,6 +129,7 @@ exports.htmlPlugin = function() {
   let pages = glob.sync(PAGE_PATH + '/*')
   let arr = []
   let templateDefault=PAGE_PATH + '/index.html';
+  let pageIndex=0;
   pages.forEach((filePath) => {
     let pagename = filePath.substring(filePath.lastIndexOf('pages') + 6)
     if(pagename!='index.html') {
@@ -142,6 +143,7 @@ exports.htmlPlugin = function() {
       if(templateCustom.length>0){//新建了index.html则使用新建的,否则使用默认的模板/pages/index.html
         templatePath=templateCustom[0];
       }
+      console.log(`>>>>> add page ${++pageIndex}:${pagename} \r\n`);
       let conf=this.getHtmlWebpackPlugin(templatePath,`${pagename}/index.html`,pagename);
       arr.push(new HtmlWebpackPlugin(conf))
     }

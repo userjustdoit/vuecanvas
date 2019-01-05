@@ -11,16 +11,12 @@
     <%
      //页面引导页
      if(htmlWebpackPlugin.options.isIndex){
-       htmlWebpackPlugin.options.pages.forEach((page)=>{
+       htmlWebpackPlugin.options.pages.forEach((page,index)=>{
     %>
-    <br/><a href="<%=page%>"><%=page%></a><br/>
+    <br/><a href="<%=page%>"><%=`<b>${index+1}</b> ${page}`%></a><br/>
     <%
        });
     }
     %>
-  <!--<%
-    //测试资源的引用
-    console.log(htmlWebpackPlugin.options.staticPath+'/js/test.js');
-   %>-->
   </body>
 </html>
