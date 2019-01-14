@@ -3,6 +3,11 @@ const path = require('path')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
+const pageConfig = require('../config/pageConfig.js')
+
+if(pageConfig){
+    console.log(`>>>>> you will only compile page include in pageConfig.js \r\n`);
+}
 
 exports.assetsPath = function (_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
@@ -138,6 +143,9 @@ exports.htmlPlugin = function() {
         console.error('>>>>>>>>>>>>>ERR:page name index is Not support!>>>>>>>>>>>>>');
         return;
       }
+      if(pageConfig&&!pageConfig[pagename]){//不要编译的页面
+          return;
+      }
       let templatePath = templateDefault;
       let templateCustom=glob.sync(filePath + '/index.html');
       if(templateCustom.length>0){//新建了index.html则使用新建的,否则使用默认的模板/pages/index.html
@@ -163,6 +171,9 @@ exports.getIndexPageConfig=function(dirFiles){
   dirFiles.forEach((fileName)=>{
     let pagename = fileName.substring(fileName.lastIndexOf('pages') + 6)
     if(pagename!='index.html') {
+       if(pageConfig&&!pageConfig[pagename]){//不要编译的页面
+            return;
+      }
       pages.push(`${process.env.NODE_ENV === 'production'? './'+pagename+'/index.html':config.dev.assetsPublicPath+pagename}`);
     }
   });
