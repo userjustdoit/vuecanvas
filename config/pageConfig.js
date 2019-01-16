@@ -4,7 +4,7 @@
  **/
 
 const pageToCompile={
-     'lowpoly':{},
+     'transform':{},
 }
 
 const pageAllCompile=null;

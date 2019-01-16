@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Transform/>
+    <Cube3D/>
   </div>
 </template>
 
 <script>
-import Transform from '@/canvas/Transform'
+import Cube3D from '@/canvas/Cube3D'
 
 export default {
   name: 'App',
   components: {
-      Transform,
+    Cube3D,
   }
 }
 </script>

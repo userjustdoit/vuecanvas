@@ -3,7 +3,8 @@
  * @des
  */
 
-import Constans from '@/base/constans.js'
+import Constans from '@/base/constans.js';
+import Util from '@/base/util/util.js';
 import Resconfig from '@/base/resconfig.js';
 export default {
   methods: {
@@ -12,11 +13,7 @@ export default {
     },
     /*****屏幕宽为750,宽高相对坐标表示一致的相对坐标体系方法start*******/
     toPx(pct,toWidth){//相对单位转绝地单位,屏幕宽为750
-      let width=Constans.defaultWidth();
-      if(toWidth){
-        width=toWidth;
-      }
-      return pct*width/750;
+      Util.toPx(pct,toWidth);
     },
     getHPct(toHeight,toWidth){//在假设宽度为750pct的情况下,获取高度方向总共的pct
       let height=Constans.defaultHeight();
